@@ -1,81 +1,63 @@
-import Header from './Header'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addItem } from '../features/CartSlice'
+import { Link } from 'react-router-dom'
 
-const plants = [
-  {
-    id:1,
-    name:'Snake Plant',
-    price:10,
-    cat:'Air Purifying',
-    img:'https://images.unsplash.com/photo-1593691509543-c55fb32c8b5d?w=400'
-  },
-  {
-    id:2,
-    name:'Peace Lily',
-    price:12,
-    cat:'Air Purifying',
-    img:'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=400'
-  },
-  {
-    id:3,
-    name:'Lavender',
-    price:15,
-    cat:'Aromatic',
-    img:'https://images.unsplash.com/photo-1597848212624-a19eb35e2651?w=400'
-  },
-  {
-    id:4,
-    name:'Jasmine',
-    price:14,
-    cat:'Aromatic',
-    img:'https://images.unsplash.com/photo-1563241527-3004b7be0ffd?w=400'
-  },
-  {
-    id:5,
-    name:'Aloe Vera',
-    price:11,
-    cat:'Succulent',
-    img:'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=400'
-  },
-  {
-    id:6,
-    name:'Jade Plant',
-    price:13,
-    cat:'Succulent',
-    img:'https://images.unsplash.com/photo-1512428813834-c702c7702b78?w=400'
-  }
-]
-
-export default function ProductList() {
+function ProductList() {
   const dispatch = useDispatch()
-  const cart = useSelector(state => state.cart.items)
+  const cartItems = useSelector(state => state.cart.items)
 
-  const added = id => cart.some(i => i.id === id)
+  const products = {
+    "Air Purifying": [
+      { id: 1, name: "Snake Plant", price: 10, image: "https://via.placeholder.com/150" },
+      { id: 2, name: "Peace Lily", price: 12, image: "https://via.placeholder.com/150" }
+    ],
+    "Aromatic": [
+      { id: 3, name: "Lavender", price: 15, image: "https://via.placeholder.com/150" },
+      { id: 4, name: "Mint", price: 8, image: "https://via.placeholder.com/150" }
+    ],
+    "Succulents": [
+      { id: 5, name: "Aloe Vera", price: 9, image: "https://via.placeholder.com/150" },
+      { id: 6, name: "Jade Plant", price: 11, image: "https://via.placeholder.com/150" }
+    ]
+  }
+
+  const isAdded = id => cartItems.some(item => item.id === id)
+
+  const totalCount = cartItems.reduce((sum, item) => sum + item.quantity, 0)
 
   return (
     <div>
-      <Header />
+      <nav>
+        <Link to="/">Home</Link> |{" "}
+        <Link to="/plants">Plants</Link> |{" "}
+        <Link to="/cart">Cart ({totalCount})</Link>
+      </nav>
 
-      <h1 className="page-title">Our Plants</h1>
+      <h1>Paradise Nursery</h1>
 
-      <div className="grid">
-        {plants.map(p => (
-          <div className="card" key={p.id}>
-            <img src={p.img} alt={p.name} />
-            <h3>{p.name}</h3>
-            <p>{p.cat}</p>
-            <p>${p.price}</p>
+      {Object.keys(products).map(category => (
+        <div key={category}>
+          <h2>{category}</h2>
 
-            <button
-              disabled={added(p.id)}
-              onClick={() => dispatch(addItem(p))}
-            >
-              {added(p.id) ? 'Added' : 'Add to Cart'}
-            </button>
-          </div>
-        ))}
-      </div>
+          {products[category].map(product => (
+            <div key={product.id}>
+              <img src={product.image} width="120" />
+              <h3>{product.name}</h3>
+              <p>${product.price}</p>
+
+              <button
+                onClick={() => dispatch(addItem(product))}
+                disabled={isAdded(product.id)}
+              >
+                {isAdded(product.id) ? "Added to Cart" : "Add to Cart"}
+              </button>
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   )
 }
+
+export default ProductList

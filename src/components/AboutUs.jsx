@@ -1,25 +1,26 @@
-import { Link } from 'react-router-dom'
+import React from 'react'
 
-export default function AboutUs() {
+function AboutUs() {
   return (
-    <div className="landing">
-      <div className="overlay">
-        <h1>Paradise Nursery</h1>
-        <p className="tagline">Bring Nature Into Your Home</p>
+    <div className="about-us-container">
+      <h1>Welcome to Paradise Nursery</h1>
 
-        <div className="about-box">
-          <h2>About Us</h2>
-          <p>
-            At Paradise Nursery, we believe every home deserves greenery.
-            We offer beautiful indoor plants that improve air quality,
-            reduce stress, and make your space feel alive.
-          </p>
-        </div>
+      <p>
+        Paradise Nursery offers premium indoor and outdoor plants for homes,
+        offices, and gardens.
+      </p>
 
-        <Link to="/plants">
-          <button className="main-btn">Get Started</button>
-        </Link>
-      </div>
+      <p>
+        Our mission is to make homes greener by delivering healthy and beautiful
+        plants at affordable prices.
+      </p>
+
+      <p>
+        We provide air purifying plants, succulents, aromatic plants, and plant
+        care guidance.
+      </p>
     </div>
   )
 }
+
+export default AboutUs
